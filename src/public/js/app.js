@@ -1,1 +1,18 @@
-alert('dd')
+// 클라이언트에 서버를 연결
+const socket = new WebSocket(`ws://${window.location.host}`)
+
+socket.addEventListener("open",()=>{
+    console.log("Connect to Server ")
+})
+
+socket.addEventListener('message',(message)=>{
+    console.log("New message: ", message.data)
+})
+
+socket.addEventListener("close",()=>{
+    console.log("Disconnected from server ")
+})
+
+setTimeout(()=>{
+    socket.send("hello from the browser!")
+},10000)
