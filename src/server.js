@@ -20,20 +20,24 @@ const handleListen = () => console.log("Listening on http://localhost:3000");
 const server = http.createServer(app)
 const wss = new WebSocket.Server({server})
 
-// function handleConnection (socket){
-//     console.log(socket)
-// }
+function onSocketClose() {
+  console.log("Disconnected from the Browser ❌");
+}
+
+const sockets = [ ];
+
 
 wss.on("connection",(socket)=>{
-    // console.log(socket)
+    // 각 브라우저 연결
+    sockets.push(socket)
     console.log("Connect to Browser ")
-    socket.send('hello')
+    socket.on("close", onSocketClose);
+
     socket.on("message",(message)=>{
-        console.log(message.toString('utf8'))
+      //각 브라우저에게 메세지 전달
+      sockets.forEach((aSocket) => aSocket.send(message))
     })
-    socket.on("close",()=>{
-        console.log("Disconnected from Browser ")
-    })
+    socket.send('hello')
 })
 
 server.listen(3000, handleListen)
