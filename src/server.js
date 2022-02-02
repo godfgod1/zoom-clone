@@ -1,6 +1,6 @@
 import http from 'http';
-import WebSocket from 'ws';
-
+import SocketIO from "socket.io";
+// import WebSocket from 'ws';
 import express from "express";
 
 
@@ -17,16 +17,18 @@ const handleListen = () => console.log("Listening on http://localhost:3000");
 //app listen으로 http가 서버에게 접근
 // app.listen(3000, handleListen);
 
-const server = http.createServer(app)
-const wss = new WebSocket.Server({server})
+const httpServer = http.createServer(app)
+const wsServer = SocketIO(httpServer);
 
+wsServer.on("connection", socket => {
+    console.log(socket);
+})
+// const wss = new WebSocket.Server({server})
+/*
 function onSocketClose() {
   console.log("Disconnected from the Browser ❌");
 }
-
 const sockets = [ ];
-
-
 wss.on("connection",(socket)=>{
     // 각 브라우저 연결
     sockets.push(socket)
@@ -39,5 +41,7 @@ wss.on("connection",(socket)=>{
     })
     socket.send('hello')
 })
+*/
+
 
 server.listen(3000, handleListen)

@@ -1,3 +1,7 @@
+const socket = io();
+
+
+/*
 const messageList =  ul = document.querySelector("ul")
 const messageForm =  from = document.querySelector("form") 
 
@@ -24,3 +28,4 @@ function handleSubmit(e){
 }
 
 messageForm.addEventListener("submit", handleSubmit);
+*/
