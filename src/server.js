@@ -13,16 +13,23 @@ app.get("/", (req, res) => res.render("home"));
 //! catchall url 유저가 다른 URL 이동하려는거 방지
 app.get('/*',(req,res)=>res.redirect('/'))
 
-const handleListen = () => console.log("Listening on http://localhost:3000");
+
 //app listen으로 http가 서버에게 접근
 // app.listen(3000, handleListen);
 
 const httpServer = http.createServer(app)
 const wsServer = SocketIO(httpServer);
 
-wsServer.on("connection", socket => {
-    console.log(socket);
-})
+wsServer.on("connection", (socket) => {
+  socket.onAny((e)=>{
+    console.log(`Socket Event:${e}`)
+  })
+  socket.on("enter_room", (roomName,  done) => {
+    socket.join(roomName)
+    done()
+  });
+});
+
 // const wss = new WebSocket.Server({server})
 /*
 function onSocketClose() {
@@ -41,7 +48,7 @@ wss.on("connection",(socket)=>{
     })
     socket.send('hello')
 })
-*/
-
-
 server.listen(3000, handleListen)
+*/
+const handleListen = () => console.log(`Listening on http://localhost:3000`);
+httpServer.listen(3000, handleListen);
